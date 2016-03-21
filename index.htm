@@ -11,12 +11,64 @@
       h1 { margin-top: 0.5em }
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+      var board = {};
+
+      function edge(x, y) {
+        return 'QWWWEASSSDASHSDASSSDZXXXC'[x + y * 5];
+      }
+
+      function imgsrc(point) {
+        switch (point.stone) {
+          case 'empty': return 'img/D' + edge(point.x, point.y) + 'N.gif';
+          case 'white': return 'img/WN.gif';
+          case 'black': return 'img/BN.gif';
+        }
+      }
+
+      function render(point) {
+        if (point)
+          document.getElementById(point.id).src = imgsrc(point);
+      }
+
+      function createBoard() {
+        board = {};
+        var htm = '';
+        for (var y = 0; y < 5; y++) {
+          for (var x = 0; x < 5; x++) {
+            var i = x + y * 5;
+            var p = {
+              id: 'p' + i,
+              x: x, y: y,
+              stone: 'empty'
+            };
+            board[i] = p;
+            htm += '<img id="' + p.id + '" src="' + imgsrc(p) + '" onclick="tap(' + x + ',' + y + ')" width="60" height="60" />';
+          }
+          htm += '<br/>';
+        }
+        document.getElementById('board').innerHTML = htm;
+      }
+
+      function tap(x, y) {
+        // alert('x: ' + x + ' y: ' + y);
+        var i = x + y * 5;
+        board[i].stone = 'black';
+        render(board[i]);
+        render(board[i + 1]);
+        render(board[i + 5]);
+      }
+
+      function load() {
+        createBoard();
+      }
+    </script>
   </head>
-  <body>
-    <table align="center">
+  <body onload="load()">
+    <table align="center" style="padding-right: 14px">
       <tr>
         <td>
-          <img src="img/logo.png" />
+          <img width="107" height="107" src="img/logo.png" />
         </td>
         <td valign="middle">
           <h1>Let's play go!</h1>
@@ -24,13 +76,7 @@
       </tr>
     </table>
     <h2>This is a test...</h2>
-    <div class="board">
-      <img width="60" height="60" src=img/DQN.gif /><img width="60" height="60" src=img/DWN.gif /><img width="60" height="60" src=img/DWN.gif /><img width="60" height="60" src=img/DWN.gif /><img width="60" height="60" src=img/DEN.gif /><br />
-      <img width="60" height="60" src=img/DAN.gif /><img width="60" height="60" src=img/DSN.gif /><img width="60" height="60" src=img/DSN.gif /><img width="60" height="60" src=img/DSN.gif /><img width="60" height="60" src=img/DDN.gif /><br />
-      <img width="60" height="60" src=img/DAN.gif /><img width="60" height="60" src=img/DSN.gif /><img width="60" height="60" src=img/DSN.gif /><img width="60" height="60" src=img/DSN.gif /><img width="60" height="60" src=img/DDN.gif /><br />
-      <img width="60" height="60" src=img/DAN.gif /><img width="60" height="60" src=img/DSN.gif /><img width="60" height="60" src=img/DSN.gif /><img width="60" height="60" src=img/DSN.gif /><img width="60" height="60" src=img/DDN.gif /><br />
-      <img width="60" height="60" src=img/DZN.gif /><img width="60" height="60" src=img/DXN.gif /><img width="60" height="60" src=img/DXN.gif /><img width="60" height="60" src=img/DXN.gif /><img width="60" height="60" src=img/DCN.gif /><br />
-    </div>
+    <div id="board" class="board"></div>
     <h3>More explanation...</h3>
   </body>
 </html>
@@ -72,6 +118,7 @@
 <img src=img/BAN.gif /><img src=img/BJN.gif /><img src=img/BDN.gif /><br />
 <img src=img/BZN.gif /><img src=img/BXN.gif /><img src=img/BCN.gif /><br />
 <br />
+What?
 <img src=BWL.gif /><img src=img/BEL.gif /><br />
 <img src=img/BJL.gif /><img src=img/BDL.gif /><br />
 <img src=img/BXL.gif /><img src=img/BCL.gif /><br />
