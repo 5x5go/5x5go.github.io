@@ -9,6 +9,12 @@
         text-align: center;
       }
       h1 { margin-top: 0.5em }
+      a { color: white; }
+      .trans {
+        opacity: 0.9;
+        filter: alpha(opacity=90); /* For IE8 and earlier */
+        color: black;
+      }
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script>
@@ -60,35 +66,115 @@
         document.getElementById('board').innerHTML = htm;
       }
 
-      var turn = 'black';
-      function tap(x, y) {
-        // alert('x: ' + x + ' y: ' + y);
-        board[x][y].stone = turn;
+      var black = 'black';
+      var white = 'white';
+      function place(x, y, color) {
+        board[x][y].stone = color;
         render(x, y);
         render(x + 1, y);
         render(x, y + 1);
-        turn = turn == 'black' ? 'white' : 'black';
+      }
+
+      function opposite(color) { return color == black ? white : black; }
+
+      function setContent(id, content) {
+        var elem = document.getElementById(id);
+        elem.style.display = content == '' ? 'none' : '';
+        elem.innerHTML = content;
+        return elem;
+      }
+
+      function setTitle(title)
+      {
+        setContent('title', title);
+        document.title = '5x5 Go - ' + title;
+      }
+
+      function setAction(content, page) {
+        setContent('action', content).href = '#' + page;
+      }
+
+      function showHeader() { document.getElementById('header').style.display = ''; }
+      function hideHeader() { document.getElementById('header').style.display = 'none'; }
+
+      function setSub(sub) { setContent('subtitle', sub); }
+
+      function setDesc(desc) { setContent('description', desc); }
+
+      function showPopup(content, confirm, color) {
+        document.getElementById('popup_text').innerHTML = content;
+        document.getElementById('popup_bg').style.backgroundColor = color;
+        document.getElementById('popup_button').innerHTML = confirm;
+        document.getElementById('popup').style.display = '';
+      }
+
+      var bad = 'red';
+      var good = 'green';
+      var info = 'goldenrod';
+
+      function hidePopup(content, confirm) {
+        document.getElementById('popup').style.display = 'none';
+      }
+
+      function clear() { 
+        hideHeader();
+        setTitle('');
+        setSub('');
+        setDesc('');
+        setAction('','');
+        hidePopup();
+      }
+
+      function loadPage(name) {
+        if (name.length == 0) name = 'intro';
+        clear();
+        document.getElementById("pagescript").src = 'pages/' + name + '.js';
+        document.cookie = name;
       }
 
       function load() {
-        createBoard();
+        var hash = location.hash;
+        if (hash.length > 1) loadPage(hash.substr(1));
+        else loadPage(document.cookie);
+      }
+
+      function promptIfNonEmpty(x, y) {
+        var nonEmpty = getPoint(x, y).stone != 'empty';
+        if (nonEmpty)
+          showPopup('You can only play in <i>empty</i> spaces', 'Got it!', bad);
+        return nonEmpty;
       }
     </script>
+    <script id="pagescript"></script>
   </head>
   <body onload="load()">
-    <table align="center" style="padding-right: 14px">
+    <table id="header" align="center" style="display: none; padding-right: 14px">
       <tr>
         <td>
           <img width="107" height="107" src="img/logo.png" />
         </td>
         <td valign="middle">
-          <h1>Let's play go!</h1>
+          <h1>Let's Play Go!</h1>
         </td>
       </tr>
     </table>
-    <h2>This is a test...</h2>
-    <div id="board" class="board"></div>
-    <h3>More explanation...</h3>
+    <h2 id="title"></h2>
+    <h3 id="subtitle"></h3>
+    <p id="description" style="width: 300px; margin: auto"></p>
+    <br />
+    <div style="margin: auto; width: 300px">
+      <div style="position: fixed; width: 300px; height: 360px; top: 140px">
+        <div id="board" class="board"></div>
+        <div id="popup" style="display: none; width: 300px; height: 300px; position: relative; top: -300px">
+          <div id="popup_bg" class="trans" style="background-color: green; color: white; width: 250px; height: 150px; position: relative; left: 16px; top: 66px; border: 1px solid black; padding: 8px">
+            <h3 id="popup_text"></h3>
+            <button id="popup_button" onclick="hidePopup()" style="color: black; background-color: black; border: none; color: white; padding: 4px 8px; font-size: 16px; margin: 4px 2px; cursor: pointer"></button>
+          </div>
+        </div>
+        <br /><a id="action"></a>
+      </div>
+    </div>
+    <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-75630988-1', 'auto');ga('send', 'pageview');</script>
   </body>
 </html>
 <!--
