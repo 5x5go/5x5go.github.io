@@ -91,7 +91,7 @@
       }
 
       function setAction(content, page) {
-        setContent('action', content).href = '#' + page;
+        setContent('action', content).href = 'javascript:loadPage("' + page + '")';
       }
 
       function showHeader() { document.getElementById('header').style.display = ''; }
