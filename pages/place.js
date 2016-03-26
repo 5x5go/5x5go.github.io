@@ -1,6 +1,8 @@
 setTitle('Placing Stones');
 setDesc('Try plaing some stones on the board');
 createBoard();
+// TODO: remove
+setAction('Next', 'capture0');
 
 var firstDone = false;
 var sideDone = false;
