@@ -90,8 +90,13 @@
         document.title = '5x5 Go - ' + title;
       }
 
+      function nav(page) {
+        alert('nav');
+        window.location.href = '/?' + page;
+      }
+
       function setAction(content, page) {
-        setContent('action', content).href = 'javascript:loadPage("' + page + '")';
+        setContent('action', content).href = 'javascript:nav("' + page + '")';
       }
 
       function showHeader() { document.getElementById('header').style.display = ''; }
