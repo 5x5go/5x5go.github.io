@@ -12,37 +12,47 @@
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script>
-      var board = {};
+      var board = [];
 
       function edge(x, y) {
         return 'QWWWEASSSDASHSDASSSDZXXXC'[x + y * 5];
       }
 
+      function getPoint(x, y) {
+        if (x < 0 || x > 4 || y < 0 || y > 4) return { off: true, stone: 'empty' };
+        return board[x][y];
+      }
+
       function imgsrc(point) {
+        // shadows
+        var top = getPoint(point.x, point.y - 1).stone != 'empty';
+        var left = getPoint(point.x - 1, point.y).stone != 'empty';
+        var shadow = top ? left ? 'B' : 'T' : left ? 'L' : 'N';
         switch (point.stone) {
-          case 'empty': return 'img/D' + edge(point.x, point.y) + 'N.gif';
-          case 'white': return 'img/WN.gif';
-          case 'black': return 'img/BN.gif';
+          case 'empty': return 'img/D' + edge(point.x, point.y) + shadow + '.gif';
+          case 'white': return 'img/W' + shadow + '.gif';
+          case 'black': return 'img/B' + shadow + '.gif';
         }
       }
 
-      function render(point) {
-        if (point)
-          document.getElementById(point.id).src = imgsrc(point);
+      function render(x, y) {
+        var p = getPoint(x, y);
+        if (!p.off)
+          document.getElementById(p.id).src = imgsrc(p);
       }
 
       function createBoard() {
-        board = {};
+        board = [];
         var htm = '';
+        for (var i = 0; i < 5; i++) board[i] = [];
         for (var y = 0; y < 5; y++) {
           for (var x = 0; x < 5; x++) {
-            var i = x + y * 5;
             var p = {
-              id: 'p' + i,
+              id: 'p' + x + y * 5,
               x: x, y: y,
               stone: 'empty'
             };
-            board[i] = p;
+            board[x][y] = p;
             htm += '<img id="' + p.id + '" src="' + imgsrc(p) + '" onclick="tap(' + x + ',' + y + ')" width="60" height="60" />';
           }
           htm += '<br/>';
@@ -50,13 +60,14 @@
         document.getElementById('board').innerHTML = htm;
       }
 
+      var turn = 'black';
       function tap(x, y) {
         // alert('x: ' + x + ' y: ' + y);
-        var i = x + y * 5;
-        board[i].stone = 'black';
-        render(board[i]);
-        render(board[i + 1]);
-        render(board[i + 5]);
+        board[x][y].stone = turn;
+        render(x, y);
+        render(x + 1, y);
+        render(x, y + 1);
+        turn = turn == 'black' ? 'white' : 'black';
       }
 
       function load() {
