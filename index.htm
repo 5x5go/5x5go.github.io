@@ -91,8 +91,9 @@
       }
 
       function nav(page) {
-        var href = window.location.protocol + '//' + window.location.hostname + '/' + window.location.pathname + '?' + page;
+        var href = window.location.protocol + '//' + window.location.hostname + '/' + window.location.pathname + '#' + page;
         window.location.href = href;
+        loadPage(page);
       }
 
       function setAction(content, page) {
@@ -139,8 +140,8 @@
       }
 
       function load() {
-        var search = location.search;
-        if (search.length > 1) loadPage(search.substr(1));
+        var hash = location.hash;
+        if (hash.length > 1) loadPage(hash.substr(1));
         // else loadPage(document.cookie);
         else loadPage('');
       }
@@ -181,7 +182,7 @@
         <br /><a id="action"></a>
       </div>
     </div>
-    <a id="intro" style="display:none" href="?place">Learn on a 5&times;5 board</a>
+    <a id="intro" style="display:none" href="javascript:nav('place')">Learn on a 5&times;5 board</a>
     <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-75630988-1', 'auto');ga('send', 'pageview');</script>
   </body>
 </html>
