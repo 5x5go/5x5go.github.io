@@ -1,5 +1,5 @@
 setTitle('Placing Stones');
-setDesc('Try plaing some stones on the board');
+setDesc('Try placing some stones on the board');
 createBoard();
 
 var firstDone = false;

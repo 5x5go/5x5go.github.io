@@ -18,6 +18,8 @@
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script>
+      var logging = false; // TODO: for debugging only
+
       var board = [];
 
       function edge(x, y) {
@@ -34,10 +36,15 @@
         var top = getPoint(point.x, point.y - 1).stone != 'empty';
         var left = getPoint(point.x - 1, point.y).stone != 'empty';
         var shadow = top ? left ? 'B' : 'T' : left ? 'L' : 'N';
+        var mark = '';
+        switch (point.mark) {
+          case 'smile': mark = 'S'; break;
+          case 'frown': mark = 'F'; break;
+        }
         switch (point.stone) {
-          case 'empty': return 'img/D' + edge(point.x, point.y) + shadow + '.gif';
-          case 'white': return 'img/W' + shadow + '.gif';
-          case 'black': return 'img/B' + shadow + '.gif';
+          case 'empty': return 'img/D' + mark + edge(point.x, point.y) + shadow + '.gif';
+          case 'white': return 'img/W' + mark + shadow + '.gif';
+          case 'black': return 'img/B' + mark + shadow + '.gif';
         }
       }
 
@@ -75,7 +82,22 @@
         render(x, y + 1);
       }
 
+      function capture(x, y) {
+        place(x, y, 'empty');
+        mark(x, y, '');
+      }
+
+      var smile = 'smile';
+      var frown = 'frown';
+
+      function mark(x, y, m) {
+        board[x][y].mark = m;
+        render(x, y);
+      }
+
       function opposite(color) { return color == black ? white : black; }
+
+      function xyLetter(x, y) { return "ABCDEFGHIJKLMNOPQRSTUVWXY"[x + y * 5]; }
 
       function setContent(id, content) {
         var elem = document.getElementById(id);
@@ -397,4 +419,14 @@ What?
 <img src=img/WN23.gif /><img src=img/WL23.gif /><img src=img/WT23.gif /><img src=img/WB23.gif /><br />
 <img src=img/WN24.gif /><img src=img/WL24.gif /><img src=img/WT24.gif /><img src=img/WB24.gif /><br />
 <img src=img/WN25.gif /><img src=img/WL25.gif /><img src=img/WT25.gif /><img src=img/WB25.gif /><br />
+-->
+
+<!--
+
+ABCDE
+FGHIJ
+KLMNO
+PQRST
+UVWXY
+
 -->
