@@ -91,7 +91,7 @@
       }
 
       function nav(page) {
-        var href = window.location.protocol + '//' + window.location.hostname + '/' + window.location.pathname + '#' + page;
+        var href = window.location.protocol + '//' + window.location.hostname + '/' + window.location.pathname + '#' + page + '?nocache=' + Math.random();
         window.location.href = href;
         loadPage(page);
       }
@@ -133,9 +133,11 @@
       }
 
       function loadPage(name) {
+        var i = name.indexOf('?');
+        name = name.substr(0, i);
         if (name.length == 0) name = 'intro';
         clear();
-        document.getElementById("pagescript").src = 'pages/' + name + '.js';
+        document.getElementById("pagescript").src = 'pages/' + name + '.js?nocache=' + Math.random();
         // document.cookie = name;
       }
 
