@@ -3,8 +3,10 @@ setDesc("Stones don't move, but may be <i>captured</i>. Try capturing the white 
 createBoard();
 place(2, 2, white);
 
+var done = false;
 var surrounding = 0;
 function tap(x, y) {
+  if (done) return;
   if (promptIfNonEmpty(x, y)) return;
   place(x, y, black);
   switch (xyLetter(x, y)) {
@@ -15,18 +17,19 @@ function tap(x, y) {
       // correct points
       switch (++surrounding) {
         case 1:
-          showPopup('Nice! This fills one of white\'s "Liberties" along the lines. Keep going...', 'Okay!', good);
+          showPopup('Nice! This fills one of white\'s "Breating space" along the lines. Keep going...', 'Okay!', good);
           break;
         case 3:
           mark(2, 2, frown);
-          showPopup('Almost! White is sad with a single "liberty." You might say "Atari!" - like "Check" in Chess.', 'Okay!', good);
+          showPopup('Almost! White is sad with a single "Breating space." You might say "Atari!" - like "Check" in Chess.', 'Okay!', good);
           break;
         case 4:
           capture(2, 2);
           setTimeout(function () {
             showPopup('Great job! Tap "Next" below to continue.', 'Okay!', good);
             setAction('Next', 'capture1');
-          }, 1000);
+          }, pause);
+          done = true;
           break;
       }
       break;
@@ -34,7 +37,7 @@ function tap(x, y) {
     case 'I':
     case 'Q':
     case 'S':
-      showPopup('This point is not necessary to capture white. Liberties are only along the lines.', 'Got it!', info);
+      showPopup('This point is not necessary to capture white. Breathing spaces are only along the lines.', 'Got it!', info);
       break;
     default:
       showPopup('Points this far from white are not necessary to capture.', 'Got it!', bad);
