@@ -177,6 +177,22 @@
           showPopup('You can only play in <i>empty</i> spaces', 'Got it!', bad);
         return nonEmpty;
       }
+
+      function boardSample(x, y, board) { return board[x + y * 5]; }
+
+      function eachPoint(board, char, callback) {
+        for (var y = 0; y < 5; y++) {
+          for (var x = 0; x < 5; x++) {
+            if (boardSample(x, y, board) == char)
+              callback(x, y);
+          }
+        }
+      }
+
+      function boardSetup(board) {
+        eachPoint(board, '#', function (x, y) { place(x, y, black); });
+        eachPoint(board, 'O', function (x, y) { place(x, y, white); });
+      }
     </script>
     <script id="pagescript"></script>
   </head>

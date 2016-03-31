@@ -1,5 +1,5 @@
-setTitle('Capturing Multiple Stones');
-setDesc('The same shape move closer to the corner may be a bit more tricy. Try capturing it!');
+setTitle('Filling "Eyes" Last');
+setDesc('The same shape moved closer to the corner may be a bit more tricky. Try capturing it!');
 createBoard();
 place(3, 0, white);
 place(3, 1, white);
