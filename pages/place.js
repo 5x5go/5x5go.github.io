@@ -13,7 +13,7 @@ var completed = false;
 function tap(x, y) {
   function checkComplete() {
     if (!completed && firstDone && sideDone && cornerDone) {
-      setAction('Next', 'capture0');
+      setAction('Next', 'captureSingle0');
       showPopup('Excellent! It looks like you have it down. Tap <i>Next</i> below to move on', 'Okay!', good);
       completed = true;
       return;

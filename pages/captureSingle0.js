@@ -27,7 +27,7 @@ function tap(x, y) {
           capture(2, 2);
           setTimeout(function () {
             showPopup('Great job! Tap "Next" below to continue.', 'Okay!', good);
-            setAction('Next', 'capture1');
+            setAction('Next', 'captureSingle1');
           }, pause);
           done = true;
           break;

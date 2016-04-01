@@ -33,7 +33,7 @@ function tap(x, y) {
         capture(4, 1);
         setTimeout(function () {
           showPopup('Wow, great job! Yes, you can "hold your breath" when capturing. Tap "Next" below to continue.', 'Okay!', good);
-          setAction('Next', 'capture6');
+          setAction('Next', 'captureSmallEye1');
         }, pause);
         done = true;
       } else {

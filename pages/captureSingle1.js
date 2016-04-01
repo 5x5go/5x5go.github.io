@@ -1,7 +1,7 @@
-setTitle('Capturing Corner Stones');
-setDesc('Capturing against the corner is even easier.<br />Give it a try!');
+setTitle('Capturing Edge Stones');
+setDesc('Capturing against the edge is easier.<br />Give it a try!');
 createBoard();
-place(0, 0, white);
+place(2, 0, white);
 
 var done = false;
 var surrounding = 0;
@@ -11,22 +11,24 @@ function tap(x, y) {
   place(x, y, black);
   switch (xyLetter(x, y)) {
     case 'B':
-    case 'F':
+    case 'H':
+    case 'D':
       switch (++surrounding) {
-        case 1:
-          mark(0, 0, frown);
-          break;
         case 2:
-          capture(0, 0);
+          mark(2, 0, frown);
+          break;
+        case 3:
+          capture(2, 0);
           setTimeout(function () {
             showPopup('Great job! Tap "Next" below to continue.', 'Okay!', good);
-            setAction('Next', 'capture3');
+            setAction('Next', 'captureSingle2');
           }, pause);
           done = true;
           break;
       }
       break;
     case 'G':
+    case 'I':
       showPopup('This is not necessary to capture white. Remember, breating spaces are only along the lines.', 'Got it!', info);
       break;
     default:
