@@ -1,5 +1,5 @@
 setTitle('Capturing Corner Stones');
-setDesc('Capturing against the corner is even easier.<br />Give it a try!');
+setDesc('Capturing against the corner is even easier. Give it a try!');
 
 var prob =
   '...!O' +
