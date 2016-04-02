@@ -1,4 +1,5 @@
 setTitle('Filling "Eyes" Last');
+setDesc('You can only place a stone in the "eye" when capturing');
 
 var prob =
   '.!O!O' +

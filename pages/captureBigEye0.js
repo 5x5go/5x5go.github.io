@@ -1,9 +1,10 @@
 setTitle('Filling "Eyes" Last');
+setDesc('You can place one stone, but not two inside the "eye" unless you\'re capturing');
 
 var prob =
-  '.cOcc' +
-  '.cOOO' +
-  '.nccc' +
+  '.!O!!' +
+  '.!OOO' +
+  '.?!!!' +
   '.....' +
   '.....';
 
