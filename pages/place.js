@@ -1,3 +1,5 @@
+// TODO: This is no longer used!
+
 setTitle('Placing Stones');
 setDesc('Try placing some stones on the board');
 createBoard();
@@ -10,7 +12,7 @@ var cornerPrompted = false;
 var count = 0;
 var toMove = black;
 var completed = false;
-function tap(x, y) {
+function tap(x, y, captured) {
   function checkComplete() {
     if (!completed && firstDone && sideDone && cornerDone) {
       setAction(next, 'captureSingle0');
