@@ -55,6 +55,18 @@
           document.getElementById(p.id).src = imgsrc(p);
       }
 
+      var done = false;
+
+      function tapEvent(x, y) {
+        if (done) return;
+        if (promptIfNonEmpty(x, y)) { return; }
+        place(x, y, toMove);
+        var captured = isCapture(x, y);
+        if (isSuicide(x, y)) return;
+        markAtari(x, y);
+        tap(x, y, captured);
+      }
+
       function createBoard() {
         board = [];
         var htm = '';
@@ -67,7 +79,7 @@
               stone: 'empty'
             };
             board[x][y] = p;
-            htm += '<img id="' + p.id + '" src="' + imgsrc(p) + '" onclick="tap(' + x + ',' + y + ')" width="60" height="60" />';
+            htm += '<img id="' + p.id + '" src="' + imgsrc(p) + '" onclick="tapEvent(' + x + ',' + y + ')" width="60" height="60" />';
           }
           htm += '<br/>';
         }
@@ -115,6 +127,7 @@
       }
 
       function nav(page) {
+        document.getElementById('permlink').href = window.location.protocol + '//' + window.location.hostname + window.location.pathname + '#' + page;
         // var href = window.location.protocol + '//' + window.location.hostname + window.location.pathname + '#' + page + '?nocache=' + Math.random();
         // window.location.href = href;
         loadPage(page);
@@ -147,6 +160,7 @@
       }
 
       function clear() { 
+        done = false;
         hideHeader();
         setTitle('');
         setSub('');
@@ -185,28 +199,120 @@
         return nonEmpty;
       }
 
+      function promptUnnecessaryAndFarAway(x, y, prob) {
+        switch (boardSample(x, y, prob)) {
+          case '?':
+            showPopup(unnecessary, gotIt, info);
+            break;
+          case '.':
+            showPopup(farAway, gotIt, bad);
+            break;
+        }
+      }
+
       function boardSample(x, y, board) { return board[x + y * 5]; }
 
-      function eachPoint(board, char, callback) {
+      function iterPoints(board, callback) {
         for (var y = 0; y < 5; y++) {
           for (var x = 0; x < 5; x++) {
-            if (boardSample(x, y, board) == char)
-              callback(x, y);
+            callback(x, y);
           }
         }
       }
 
-      function boardSetup(board) {
+      function eachPoint(board, char, callback) {
+        iterPoints(board, function (x, y) { if (boardSample(x, y, board) == char) callback(x, y); });
+      }
+
+      function countEachPoint(board, char) {
+        var count = 0;
+        eachPoint(board, char, function(x, y) { count++; });
+        return count;
+      }
+
+      function iterAdjacent(x, y, callback) {
+        if (x > 0) callback(x - 1, y);
+        if (x < 4) callback(x + 1, y);
+        if (y > 0) callback(x, y - 1);
+        if (y < 4) callback(x, y + 1);
+      }
+
+      function iterGroup(x, y, callback) {
+        iterPoints(board, function (x, y) { board[x][y].visited = false; });
+        var color = board[x][y].stone;
+        var group = [{ x: x, y: y }];
+        var liberties = 0;
+        while (group.length > 0) {
+          var p = group.pop();
+          var s = board[p.x][p.y].stone ;
+          if (s == color) {
+            callback(p.x, p.y);
+            iterAdjacent(p.x, p.y, function (x, y) {
+              if (!board[x][y].visited) group.push({x: x, y: y});
+            });
+          } else if (s == 'empty') {
+            if (!board[p.x][p.y].visited) liberties++;
+          }
+          board[p.x][p.y].visited = true;
+        }
+        return liberties;
+      }
+
+      function liberties(x, y) {
+        return iterGroup(x, y, function(x, y) {});
+      }
+
+      function markAtari(x, y) {
+        var color = board[x][y].stone;
+        iterAdjacent(x, y, function(x, y) {
+          var s = board[x][y].stone;
+          if (s != 'empty' && s != color) {
+            if (liberties(x, y) == 1) {
+              iterGroup(x, y, function(x, y) { mark(x, y, frown); });
+            }
+          }
+        });
+      }
+
+      function isCapture(x, y) {
+        var cap = false;
+        var color = board[x][y].stone;
+        iterAdjacent(x, y, function(x, y) {
+          var s = board[x][y].stone;
+          if (s != 'empty' && s != color) {
+            if (liberties(x, y) == 0) {
+              iterGroup(x, y, capture);
+              cap = true;
+            }
+          }
+        });
+        return cap;
+      }
+
+      function isSuicide(x, y) {
+        if (liberties(x, y) == 0) {
+          iterGroup(x, y, function(x, y) { mark(x, y, frown); });
+          showPopup(thisIsSuicide, ahISee, bad);
+          setTimeout(function () { iterGroup(x, y, capture); }, pause * 3);
+          return true;
+        }
+        return false;
+      }
+
+      var toMove;
+      function boardSetup(board, move) {
+        createBoard();
+        toMove = move;
         eachPoint(board, '#', function (x, y) { place(x, y, black); });
         eachPoint(board, 'O', function (x, y) { place(x, y, white); });
       }
 
       var farAway = 'Points this far away are unnecessary to capture.';
       var unnecessary = 'This point is okay but unnecessary. Breating spaces are only along the lines.';
-      var thisIsSuicide = 'This would be suicide! Your stone would itself have zero breating spaces.';
+      var thisIsSuicide = 'You just committed suicide! You have zero breating spaces.';
       var tapNext = ' Tap "Next" to continue.';
       var gotIt = 'Got it!';
-      var gotIt = 'Ah, I see!';
+      var ahISee = 'Ah, I see!';
       var okay = 'Okay!';
       var next = 'next';
     </script>
@@ -222,9 +328,9 @@
         </td>
       </tr>
     </table>
-    <h2 id="title"></h2>
+    <a id="permlink"><h2 id="title"></h2></a>
     <h3 id="subtitle"></h3>
-    <a id="intro" style="display:none" href="javascript:nav('place')">Learn on a 5&times;5 board<br /><br /></a>
+    <a id="intro" style="display:none" href="javascript:nav('captureSingle0')">Learn on a 5&times;5 board<br /><br /></a>
     <p id="description" style="width: 300px; margin: auto"></p>
     <br />
     <div style="margin: auto; width: 300px">
