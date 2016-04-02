@@ -32,23 +32,23 @@ function tap(x, y) {
         capture(3, 1);
         capture(4, 1);
         setTimeout(function () {
-          showPopup('Wow, great job! Yes, you can "hold your breath" when capturing. Tap "Next" below to continue.', 'Okay!', good);
-          setAction('Next', 'captureSmallEye1');
+          showPopup('Wow, great job! Yes, you can "hold your breath" when capturing.' + tapNext, okay, good);
+          setAction(next, 'captureSmallEye1');
         }, pause);
         done = true;
       } else {
         mark(4, 0, frown);
         setTimeout(function () {
-          showPopup('This would be suicide! Your stone would itself have zero breating spaces.', 'Ah, I see!', bad);
+          showPopup(thisIsSuicide, ahISee, bad);
           setTimeout(function () { capture(4, 0); }, pause * 5);
         }, pause);
       }
       break;
     case 'M':
-      showPopup('This point is not necessary to capture white. Breating spaces are only along the lines.', 'Got it!', info);
+      showPopup(unnecessary, gotIt, info);
       break;
     default:
-      showPopup('Points this far from white are not necessary to capture.', 'Got it!', bad);
+      showPopup(farAway, gotIt, bad);
       break;
   }
 }

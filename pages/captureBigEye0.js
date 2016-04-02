@@ -27,14 +27,14 @@ function tap(x, y) {
         eachPoint(prob, 'O', function(x, y) { mark(x, y, frown); });
       } else if (surrounding == 7) {
         eachPoint(prob, 'O', capture);
-        showPopup('Super! Again, you can "hold your breath" when capturing. Tap "Next" below to continue.', 'Okay!', good);
-        setAction('Next', 'capture6');
+        showPopup('Super! Again, you can "hold your breath" when capturing.' + tapNext, okay, good);
+        setAction(next, 'captureBigEye1');
       } else {
         if ((x == 3 && getPoint(4, 0).stone != 'empty') || (x == 4 && getPoint(3, 0).stone != 'empty')) {
           mark(3, 0, frown);
           mark(4, 0, frown);
           setTimeout(function () {
-            showPopup('This would be suicide! Your stone would itself have zero breating spaces.', 'Ah, I see!', bad);
+            showPopup(thisIsSuicide, ahISee, bad);
             setTimeout(function () {
               mark(3, 0, nomark);
               mark(4, 0, nomark);
@@ -46,10 +46,10 @@ function tap(x, y) {
       }
       break;
     case 'n':
-      showPopup('This point is not necessary to capture white. Breating spaces are only along the lines.', 'Got it!', info);
+      showPopup(unnecessary, gotIt, info);
       break;
     default:
-      showPopup('Points this far from white are not necessary to capture.', 'Got it!', bad);
+      showPopup(farAway, gotIt, bad);
       break;
   }
 }
