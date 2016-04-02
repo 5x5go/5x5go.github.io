@@ -1,5 +1,4 @@
 setTitle('Filling "Eyes" Last');
-setDesc('');
 createBoard();
 
 var prob =
@@ -25,21 +24,21 @@ function tap(x, y) {
     case 'e':
       if (surrounding == 5) {
         eachPoint(prob, 'O', capture);
-        showPopup('Wonderful! Again, you can "hold your breath" when capturing. Tap "Next" below to continue.', 'Okay!', good);
-        setAction('Next', 'captureBigEye0');
+        showPopup('Wonderful! Again, you can "hold your breath" when capturing.' + tapNext, okay, good);
+        setAction(next, 'captureBigEye0');
       } else {
         mark(x, y, frown);
         setTimeout(function () {
-          showPopup('This would be suicide! Your stone would itself have zero breating spaces.', 'Ah, I see!', bad);
+          showPopup(thisIsSuicide, ahISee, bad);
           setTimeout(function () { capture(x, y); }, pause * 5);
         }, pause);
       }
       break;
     case 'n':
-      showPopup('This point is not necessary to capture white. Breating spaces are only along the lines.', 'Got it!', info);
+      showPopup(unnecessary, gotIt, info);
       break;
     default:
-      showPopup('Points this far from white are not necessary to capture.', 'Got it!', bad);
+      showPopup(farAway, gotIt, bad);
       break;
   }
 }

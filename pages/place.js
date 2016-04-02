@@ -13,8 +13,8 @@ var completed = false;
 function tap(x, y) {
   function checkComplete() {
     if (!completed && firstDone && sideDone && cornerDone) {
-      setAction('Next', 'captureSingle0');
-      showPopup('Excellent! It looks like you have it down. Tap <i>Next</i> below to move on', 'Okay!', good);
+      setAction(next, 'captureSingle0');
+      showPopup('Excellent! You have it.' + tapNext, okay, good);
       completed = true;
       return;
     }
@@ -29,29 +29,29 @@ function tap(x, y) {
   var prefix = '';
   if (corner && !cornerDone) {
     if (!cornerPrompted)
-      showPopup('Yep, you can play in the corners too.', 'Got it!', info);
+      showPopup('Yep, you can play in the corners too.', gotIt, info);
     else prefix = 'Great! ';
     cornerDone = true;
     return checkComplete();
   } else if (side && !sideDone) {
     if (!sidePrompted)
-      showPopup('Yep, you can play on the edge of the board too.', 'Got it!', info);
+      showPopup('Yep, you can play on the edge of the board too.', gotIt, info);
     else prefix = 'Great! ';
     sideDone = true;
     return checkComplete();
   } else if (!firstDone) {
-    showPopup('Yep, you play on the line intersections - not <i>in</i> the squares.', 'Got it!', info);
+    showPopup('Yep, you play on the line intersections - not <i>in</i> the squares.', gotIt, info);
     firstDone = true;
     return checkComplete();
   }
   var needPrompt = count > 3;
   if (needPrompt && !sideDone && !sidePrompted) {
-    showPopup(prefix + 'Try playing on the very edge.', 'Okay!', info);
+    showPopup(prefix + 'Try playing on the very edge.', okay, info);
     sidePrompted = true;
     return checkComplete();
   }
   if (needPrompt && !cornerDone && !cornerPrompted) {
-    showPopup(prefix + 'Try playing in the very corner.', 'Okay!', info);
+    showPopup(prefix + 'Try playing in the very corner.', okay, info);
     cornerPrompted = true;
     return checkComplete();
   }

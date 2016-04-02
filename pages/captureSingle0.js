@@ -17,17 +17,17 @@ function tap(x, y) {
       // correct points
       switch (++surrounding) {
         case 1:
-          showPopup('Nice! This fills one of white\'s "Breating space" along the lines. Keep going...', 'Okay!', good);
+          showPopup('Nice! This fills one of white\'s "Breating space" along the lines. Keep going...', okay, good);
           break;
         case 3:
           mark(2, 2, frown);
-          showPopup('Almost! White is sad with a single "Breating space." You might say "Atari!" - like "Check" in Chess.', 'Okay!', good);
+          showPopup('Almost! White is sad with a single "Breating space." You might say "Atari!" - like "Check" in Chess.', okay, good);
           break;
         case 4:
           capture(2, 2);
           setTimeout(function () {
-            showPopup('Great job! Tap "Next" below to continue.', 'Okay!', good);
-            setAction('Next', 'captureSingle1');
+            showPopup('Great job!' + tapNext, okay, good);
+            setAction(next, 'captureSingle1');
           }, pause);
           done = true;
           break;
@@ -37,10 +37,10 @@ function tap(x, y) {
     case 'I':
     case 'Q':
     case 'S':
-      showPopup('This point is not necessary to capture white. Breathing spaces are only along the lines.', 'Got it!', info);
+      showPopup(unnecessary, gotIt, info);
       break;
     default:
-      showPopup('Points this far from white are not necessary to capture.', 'Got it!', bad);
+      showPopup(farAway, gotIt, bad);
       break;
   }
 }

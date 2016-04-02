@@ -20,8 +20,8 @@ function tap(x, y) {
         case 3:
           capture(2, 0);
           setTimeout(function () {
-            showPopup('Great job! Tap "Next" below to continue.', 'Okay!', good);
-            setAction('Next', 'captureSingle2');
+            showPopup('Great job!' + tapNext, okay, good);
+            setAction(next, 'captureSingle2');
           }, pause);
           done = true;
           break;
@@ -29,10 +29,10 @@ function tap(x, y) {
       break;
     case 'G':
     case 'I':
-      showPopup('This is not necessary to capture white. Remember, breating spaces are only along the lines.', 'Got it!', info);
+      showPopup(unnecessary, gotIt, info);
       break;
     default:
-      showPopup('Points this far from white are not necessary to capture.', 'Got it!', bad);
+      showPopup(farAway, gotIt, bad);
       break;
   }
 }

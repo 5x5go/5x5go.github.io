@@ -30,8 +30,8 @@ function tap(x, y) {
           capture(3, 2);
           capture(2, 1);
           setTimeout(function () {
-            showPopup('Very good job! Tap "Next" below to continue.', 'Okay!', good);
-            setAction('Next', 'captureSmallEye0');
+            showPopup('Very good job!' + tapNext, okay, good);
+            setAction(next, 'captureSmallEye0');
           }, pause);
           done = true;
           break;
@@ -42,10 +42,10 @@ function tap(x, y) {
     case 'Q':
     case 'T':
     case 'J':
-      showPopup('This point is not necessary to capture white. Breating spaces are only along the lines.', 'Got it!', info);
+      showPopup(unnecessary, gotIt, info);
       break;
     default:
-      showPopup('Points this far from white are not necessary to capture.', 'Got it!', bad);
+      showPopup(farAway, gotIt, bad);
       break;
   }
 }
