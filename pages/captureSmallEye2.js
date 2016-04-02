@@ -12,7 +12,7 @@ boardSetup(prob, black);
 
 function tap(x, y, captured) {
   if (captured) {
-    showPopup('Excelleng! Once again, you can "hold your breath" when capturing.' + tapNext, okay, good);
+    showPopup('Excellent! Once again, you can "hold your breath" when capturing.' + tapNext, okay, good);
     setAction(next, 'captureBigEye0');
     done = true;
   }

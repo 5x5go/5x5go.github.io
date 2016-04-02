@@ -1,7 +1,7 @@
 setTitle('Filling "Big Eyes" Last');
 
 var prob =
-  '.!O!?' +
+  '.!O!.' +
   '.!O!!' +
   '.!OOO' +
   '.?!!!' +
